@@ -1,82 +1,76 @@
-<?php session_start(); ?>
+<?php
+$city = $_GET['city'] ?? '';
+$unit = $_GET['unit'] ?? 'imperial'; // Default to Fahrenheit
+
+$temperature = '';
+$condition = '';
+$description = '';
+$icon = '';
+$cityName = '';
+
+if ($city) {
+    $apiKey = "65c773aa40850293c20997299c7a903c"; // Replace with your real OpenWeatherMap API key
+    $apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" . urlencode($city) . "&appid=$apiKey&units=$unit";
+
+    $response = @file_get_contents($apiUrl);
+    if ($response !== false) {
+        $data = json_decode($response, true);
+        if (isset($data['main']['temp'])) {
+            $temperature = $data['main']['temp'];
+            $condition = strtolower($data['weather'][0]['main']);
+            $description = strtolower($data['weather'][0]['description']);
+            $cityName = $data['name'];
+
+            // Icon mapping
+            $iconMap = [
+                'clear sky' => 'clear-day',
+                'few clouds' => 'partly-cloudy-day',
+                'scattered clouds' => 'cloudy',
+                'broken clouds' => 'overcast',
+                'shower rain' => 'rain',
+                'rain' => 'rain',
+                'thunderstorm' => 'thunderstorms',
+                'snow' => 'snow',
+                'mist' => 'mist',
+                'clouds' => 'cloudy',
+            ];
+
+            $iconFileName = $iconMap[$description] ?? 'cloudy';
+            $icon = "icons/" . $iconFileName . ".png";
+        }
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Weather App</title>
+  <title>Weather Checker</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Weather Checker 🌤️</h1>
+  <div class="container">
+    <h1>Weather Checker ⛅</h1>
 
-  <form action="weather.php" method="get" autocomplete="off">
-  <div class="autocomplete-wrapper">
-    <input type="text" id="cityInput" name="city" placeholder="Enter city name" required>
-    <ul id="suggestions"></ul>
+    <form action="" method="get">
+      <input type="text" name="city" placeholder="Enter city name" value="<?php echo htmlspecialchars($city); ?>" required>
+      <select name="unit">
+        <option value="metric" <?php echo $unit === 'metric' ? 'selected' : ''; ?>>Celsius (°C)</option>
+        <option value="imperial" <?php echo $unit === 'imperial' ? 'selected' : ''; ?>>Fahrenheit (°F)</option>
+      </select>
+      <button type="submit">Get Weather</button>
+    </form>
+
+    <?php if ($temperature && $icon): ?>
+      <div class="weather-box">
+        <h3><?php echo htmlspecialchars($city); ?></h3>
+        <img src="<?php echo $icon; ?>" alt="<?php echo $desc; ?>" class="weather-icon">
+        <p style="text-transform: capitalize;"><?php echo htmlspecialchars($description); ?></p>
+        <p><strong>Temperature:</strong> <?php echo round($temperature, 2); ?>° <?php echo $unit === 'metric' ? 'C' : 'F'; ?></p>
+      </div>
+    <?php endif; ?>
   </div>
-
-  <select name="unit">
-    <option value="metric">Celsius (°C)</option>
-    <option value="imperial">Fahrenheit (°F)</option>
-  </select>
-
-  <button type="submit">Get Weather</button>
-</form>
-
-<script>
-  const input = document.getElementById('cityInput');
-  const suggestions = document.getElementById('suggestions');
-  const apiKey = '65c773aa40850293c20997299c7a903c'; // Replace with your OpenWeatherMap key
-
-  input.addEventListener('input', async () => {
-    const query = input.value;
-    suggestions.innerHTML = '';
-
-    if (query.length < 3) return;
-
-    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${query},US&limit=5&appid=${apiKey}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data.length === 0) return;
-
-    data.forEach(place => {
-      const li = document.createElement('li');
-      li.textContent = `${place.name}, ${place.state || ''}, ${place.country}`;
-      li.addEventListener('click', () => {
-        input.value = `${place.name}, ${place.state || place.country}`;
-        suggestions.innerHTML = '';
-      });
-      suggestions.appendChild(li);
-    });
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.autocomplete-wrapper')) {
-      suggestions.innerHTML = '';
-    }
-  });
-</script>
-
-<?php
-    if (isset($_SESSION['weather_result'])) {
-      echo $_SESSION['weather_result'];
-      unset($_SESSION['weather_result']);
-    }
-
-    if (isset($_SESSION['search_history']) && count($_SESSION['search_history']) > 0) {
-      echo "<div class='history'><h3>Recent Searches</h3><ul>";
-      foreach (array_reverse($_SESSION['search_history']) as $city) {
-        echo "<li>$city</li>";
-      }
-      echo "</ul></div>";
-    }
-  ?>
-  
 </body>
 </html>
-
-
-
-
-

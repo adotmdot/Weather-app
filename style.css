@@ -1,101 +1,74 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 40px;
-    background: #e0f7fa;
-  }
-  
-  form {
-    margin: 20px auto;
-  }
-  
-  input[type="text"] {
-    padding: 10px;
-    width: 250px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background: #00796b;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .weather-box {
-    margin-top: 30px;
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-  
-  .weather-box img {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .weather-box .time {
-    color: #555;
-    font-size: 0.9em;
-    margin-bottom: 10px;
-  }
-  
-  .error {
-    color: red;
-    font-weight: bold;
-  }
-  
-  .history {
-    margin-top: 40px;
-  }
-  
-  .history ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .history li {
-    margin: 4px 0;
-  }
- 
-  select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-left: 10px;
-  }
-  
-  .autocomplete-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  #suggestions {
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    width: 100%;
-    max-height: 150px;
-    overflow-y: auto;
-    z-index: 10;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  #suggestions li {
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  #suggestions li:hover {
-    background: #f0f0f0;
-  }
-     
+  background-color: #dff6f0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 40px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+input[type="text"],
+select,
+button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #00695c;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #004d40;
+}
+
+.weather-box {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+
+.weather-box img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.weather-box p {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
