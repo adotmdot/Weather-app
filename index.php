@@ -1,6 +1,6 @@
 <?php
 $city = $_GET['city'] ?? '';
-$unit = $_GET['unit'] ?? 'imperial'; // Default to Fahrenheit
+$unit = $_GET['unit'] ?? 'imperial'; 
 
 $temperature = '';
 $condition = '';
@@ -9,7 +9,7 @@ $icon = '';
 $cityName = '';
 
 if ($city) {
-    $apiKey = "65c773aa40850293c20997299c7a903c"; // Replace with your real OpenWeatherMap API key
+    $apiKey = "65c773aa40850293c20997299c7a903c"; 
     $apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" . urlencode($city) . "&appid=$apiKey&units=$unit";
 
     $response = @file_get_contents($apiUrl);
@@ -21,7 +21,7 @@ if ($city) {
             $description = strtolower($data['weather'][0]['description']);
             $cityName = $data['name'];
 
-            // Icon mapping
+            
             $iconMap = [
                 'clear sky' => 'clear-day',
                 'few clouds' => 'partly-cloudy-day',
